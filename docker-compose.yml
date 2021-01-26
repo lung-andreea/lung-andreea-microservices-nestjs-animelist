@@ -1,0 +1,86 @@
+version: '3.8'
+services:
+  gateway:
+    build: ./api-gateway
+    restart: always
+    hostname: gateway
+    volumes:
+      - ./api-gateway:/app
+    env_file:
+      - .env
+    ports:
+      - ${API_GATEWAY_PORT}:${API_GATEWAY_PORT}
+    networks:
+      - backend
+      - frontend
+    depends_on:
+      - redis
+  animeservice:
+    build: ./animeservice
+    restart: always
+    hostname: ${ANIME_SERVICE_HOST}
+    volumes:
+      - ./animeservice:/app
+    env_file:
+      - .env
+    networks:
+      - backend
+    depends_on:
+      - redis
+  watchlist:
+    build: ./watchlistservice
+    restart: always
+    hostname: ${WATCHLIST_SERVICE_HOST}
+    volumes:
+      - ./watchlistservice:/app
+    env_file:
+      - .env
+    networks:
+      - backend
+    depends_on:
+      - db
+      - animeservice
+      - redis
+  reactapp:
+    build: ./reactapp
+    stdin_open: true
+    hostname: ${CLIENT_HOST}
+    volumes:
+      - ./reactapp:/app
+      - /app/node_modules
+    ports:
+    - ${CLIENT_APP_PORT}:${CLIENT_APP_PORT}
+    environment:
+      - CHOKIDAR_USEPOLLING=true
+    command: yarn start
+    networks:
+      - frontend
+    depends_on:
+      - gateway
+  db:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_DATABASE}
+      MONGO_USER: ${MONGO_USER}
+      MONGO_PASSWORD: ${MONGO_PASSWORD}
+    volumes:
+      - "./db/data/db-files:/data/db"
+      - "./db/init/:/docker-entrypoint-initdb.d/"
+    networks:
+      - backend
+  redis:
+    image: "redis:alpine"
+    ports:
+      - "6379:6379"
+    command: [ "redis-server", "--appendonly", "yes" ]
+    networks:
+      - backend
+networks:
+  backend:
+    driver: bridge
+  frontend:
+    external:
+      name: infrastructure

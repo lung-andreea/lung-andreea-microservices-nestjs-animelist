@@ -1,0 +1,58 @@
+.
+├── animeservice
+│   ├── src
+│   │   ├── app.controller.ts
+│   │   ├── app.module.ts
+│   │   ├── app.service.ts
+│   │   └── main.ts
+│   ├── Dockerfile
+│   ├── nest-cli.json
+│   ├── package.json
+├── api-gateway
+│   ├── src
+│   │   ├── authentication
+│   │   ├── user
+│   │   ├── app.controller.ts
+│   │   ├── app.module.ts
+│   │   ├── app.service.ts
+│   │   ├── main.ts
+│   │   └── util.ts
+│   ├── Dockerfile
+│   ├── nest-cli.json
+│   └── package.json
+├── images
+│   ├── architecture_diagram.png
+│   ├── mermaid-diagram-animeservice.png
+│   ├── mermaid-diagram-api-gateway.png
+│   └── mermaid-diagram-watchlistservice.png
+├── reactapp
+│   ├── public
+│   ├── src
+│   │   ├── components
+│   │   ├── contexts
+│   │   ├── utils
+│   │   ├── App.js
+│   │   ├── anime_girl.png
+│   │   ├── appStyles.scss
+│   │   ├── index.js
+│   │   └── styles.scss
+│   ├── Dockerfile
+│   ├── README.md
+│   ├── package.json
+│   └── yarn.lock
+├── watchlistservice
+│   ├── src
+│   │   ├── watchlist
+│   │   ├── app.module.ts
+│   │   ├── main.ts
+│   │   └── util.ts
+│   ├── test
+│   │   ├── app.e2e-spec.ts
+│   │   └── jest-e2e.json
+│   ├── Dockerfile
+│   ├── nest-cli.json
+│   ├── package.json
+│   └── yarn.lock
+├── README.md
+├── docker-compose.yml
+└── project-structure-tree.txt
